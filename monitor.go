@@ -18,8 +18,21 @@ var HealthMetric = prometheus.NewGaugeVec(
 	[]string{"component", "env_name", "type"},
 )
 
-func HealthMetricMetric(component, env_name, type1 string) {
-	HealthMetric.With(prometheus.Labels{"component": component, "env_name": env_name, "type": type1}).Set(1.0)
+var DriverHealthMetric = prometheus.NewGaugeVec(
+	prometheus.GaugeOpts{
+		Namespace: "csi_driver",
+		Name:      "health_metric",
+		Help:      "nigha health metric @todo add doc here",
+	},
+	[]string{"driver", "dtype", "env_name", "type"},
+)
+
+func HealthMetricMetric(value float64, component, env_name, type1 string) {
+	HealthMetric.With(prometheus.Labels{"component": component, "env_name": env_name, "type": type1}).Set(value)
+}
+
+func DriverHealthMetricMetric(value float64, driver, dtype, env_name, type1 string) {
+	DriverHealthMetric.With(prometheus.Labels{"driver": driver, "dtype": dtype, "env_name": env_name, "type": type1}).Set(value)
 }
 
 func init() {
@@ -34,24 +47,29 @@ func PromHandler(c *gin.Context) {
 
 func Demo(c *gin.Context) {
 	//for {
-		HealthMetricMetric("prometheus", "nigha_ford.us.hopkinton.dellemc.com", "dev")
-		HealthMetricMetric("alertmanager", "nigha_ford.us.hopkinton.dellemc.com", "dev")
-		HealthMetricMetric("grafana", "nigha_ford.us.hopkinton.dellemc.com", "dev")
-		HealthMetricMetric("elasticsearch", "nigha_ford.us.hopkinton.dellemc.com", "dev")
-		HealthMetricMetric("kibana", "nigha_ford.us.hopkinton.dellemc.com", "dev")
+	HealthMetricMetric(1.0, "prometheus", "nigha_ford.us.hopkinton.dellemc.com", "dev")
+	HealthMetricMetric(1.0, "alertmanager", "nigha_ford.us.hopkinton.dellemc.com", "dev")
+	HealthMetricMetric(1.0, "grafana", "nigha_ford.us.hopkinton.dellemc.com", "dev")
+	HealthMetricMetric(1.0, "elasticsearch", "nigha_ford.us.hopkinton.dellemc.com", "dev")
+	HealthMetricMetric(1.0, "kibana", "nigha_ford.us.hopkinton.dellemc.com", "dev")
 
-		HealthMetricMetric("prometheus", "nigha_benz.us.hopkinton.dellemc.com", "test")
-		HealthMetricMetric("alertmanager", "nigha_benz.us.hopkinton.dellemc.com", "test")
-		HealthMetricMetric("grafana", "nigha_benz.us.hopkinton.dellemc.com", "test")
-		HealthMetricMetric("elasticsearch", "nigha_benz.us.hopkinton.dellemc.com", "test")
-		HealthMetricMetric("kibana", "nigha_benz.us.hopkinton.dellemc.com", "test")
+	HealthMetricMetric(1.0, "prometheus", "nigha_benz.us.hopkinton.dellemc.com", "test")
+	HealthMetricMetric(1.0, "alertmanager", "nigha_benz.us.hopkinton.dellemc.com", "test")
+	HealthMetricMetric(1.0, "grafana", "nigha_benz.us.hopkinton.dellemc.com", "test")
+	HealthMetricMetric(1.0, "elasticsearch", "nigha_benz.us.hopkinton.dellemc.com", "test")
+	HealthMetricMetric(1.0, "kibana", "nigha_benz.us.hopkinton.dellemc.com", "test")
 
-		HealthMetricMetric("prometheus", "nigha_benz.us.hopkinton.dellemc.com", "prod")
-		HealthMetricMetric("alertmanager", "nigha_benz.us.hopkinton.dellemc.com", "prod")
-		HealthMetricMetric("grafana", "nigha_benz.us.hopkinton.dellemc.com", "prod")
-		HealthMetricMetric("elasticsearch", "nigha_benz.us.hopkinton.dellemc.com", "prod")
-		HealthMetricMetric("kibana", "nigha_benz.us.hopkinton.dellemc.com", "prod")
-		time.Sleep(5 * time.Second)
+	HealthMetricMetric(1.0, "prometheus", "nigha_benz.us.hopkinton.dellemc.com", "prod")
+	HealthMetricMetric(1.0, "alertmanager", "nigha_benz.us.hopkinton.dellemc.com", "prod")
+	HealthMetricMetric(1.0, "grafana", "nigha_benz.us.hopkinton.dellemc.com", "prod")
+	HealthMetricMetric(1.0, "elasticsearch", "nigha_benz.us.hopkinton.dellemc.com", "prod")
+	HealthMetricMetric(1.0, "kibana", "nigha_benz.us.hopkinton.dellemc.com", "prod")
+
+	DriverHealthMetricMetric(1.0, "csi-unity", "controller", "nigha_benz.us.hopkinton.dellemc.com", "prod")
+	DriverHealthMetricMetric(1.0, "csi-unity", "node", "nigha_benz.us.hopkinton.dellemc.com", "prod")
+	DriverHealthMetricMetric(1.0, "csi-powermax", "controller", "nigha_benz.us.hopkinton.dellemc.com", "prod")
+	DriverHealthMetricMetric(1.0, "csi-powermax", "node", "nigha_benz.us.hopkinton.dellemc.com", "prod")
+	time.Sleep(5 * time.Second)
 	//}
 }
 

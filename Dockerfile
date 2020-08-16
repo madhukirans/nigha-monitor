@@ -13,5 +13,5 @@ RUN go build .
 FROM alpine
 MAINTAINER  The Prometheus Authors <prometheus-developers@googlegroups.com>
 
-COPY --from=0 /go/src/github.com/dell/nigha-monitor  /bin/nigha-monitor
+COPY --from=0 /go/src/github.com/dell/nigha-monitor/nigha-monitor  /bin/nigha-monitor
 ENTRYPOINT ["/bin/nigha-monitor"]
